@@ -9,16 +9,13 @@ import java.util.List;
 
 public class ClientDemo {
     public static void main(String[] args) {
-        // Configure and build the session factory
+
         SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Client.class).buildSessionFactory();
         
-        // Insert records
         insertClients(factory);
 
-        // Retrieve and print all records
         printAllClients(factory);
 
-        // Close the factory
         factory.close();
     }
 
@@ -26,7 +23,6 @@ public class ClientDemo {
         Session session = factory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        // Create Client objects and persist
         Client client1 = new Client();
         client1.setName("Alice");
         client1.setGender("Female");
@@ -43,20 +39,12 @@ public class ClientDemo {
         client2.setEmail("bob@example.com");
         client2.setMobileNumber("9876543210");
 
-        session.save(client1);
-        session.save(client2);
-
-        transaction.commit();
-        session.close();
-
         System.out.println("Records inserted successfully!");
     }
 
     public static void printAllClients(SessionFactory factory) {
         Session session = factory.openSession();
 
-        // HQL query to fetch all Client records
-        List<Client> clients = session.createQuery("from Client", Client.class).list();
 
         for (Client client : clients) {
             System.out.println("ID: " + client.getId());
@@ -66,7 +54,6 @@ public class ClientDemo {
             System.out.println("Location: " + client.getLocation());
             System.out.println("Email: " + client.getEmail());
             System.out.println("Mobile Number: " + client.getMobileNumber());
-            System.out.println("-----------------------------");
         }
 
         session.close();
